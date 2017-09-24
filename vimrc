@@ -1,5 +1,5 @@
 " -----------------------------------------------------------------
-" Author: CHEN Feng
+" Author: Bojack F. CHEN
 " Description: My personal vim configuration file
 "
 "-----------------------------------------------------------------
