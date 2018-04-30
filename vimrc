@@ -1,4 +1,4 @@
-" -----------------------------------------------------------------
+"-----------------------------------------------------------------
 " Author: Bojack F. CHEN
 " Description: My personal vim configuration file
 "
@@ -222,20 +222,69 @@ call pathogen#infect()
 
 
 "-----------------------------------------------------------------
-" taglsit plugin
+" YouCompleteMe plugin
 "
-" Create tags according to the file.
+" Code auto popup completion.
 "
 "-----------------------------------------------------------------
 "
-" Map F8 to toggle taglist.
-nnoremap <f8> :TlistToggle<CR>
+let g:acp_enableAtStartup = 0
 
-" Always show taglist on the right of the main window.
-let Tlist_Use_Right_Window=1
+" Enable completion from tags.
+let g:ycm_collect_identifiers_from_tags_files = 1
 
-" Close taglist window if it is the only window.
-let Tlist_Exit_OnlyWindow=1
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+
+
+
+"-----------------------------------------------------------------
+" CtrlP plugin
+"
+" Full path fuzzy file/buffer/mru/tag finder.
+"
+"-----------------------------------------------------------------
+"
+" Map ctrl + p to invoke CtrlP
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+" Set CtrlP working directory to be the directory of the current file
+let g:ctrlp_working_path_mode = 'ra'
+
+" If a file is already open, open it again in a new pane
+let g:ctrlp_switch_buffer = 'et'
+
+
+
+"-----------------------------------------------------------------
+" syntastic plugin
+"
+" This is a syntax checking plugin.
+"
+"-----------------------------------------------------------------
+"
+" Add information to status line
+set statusline +=%#warningmsg#
+set statusline +=%{SyntasticStatuslineFlag()}
+set statusline +=%*
+
+" Set syntax checking options
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list            = 1
+let g:syntastic_check_on_open            = 1
+let g:syntastic_check_on_wq              = 0
+
+
+
+"-----------------------------------------------------------------
+" auto-pairs plugin
+"
+" Auto close paired characters.
+"
+"-----------------------------------------------------------------
+"
+" Enable fly mode
+let g:AutoPairsFlyMode = 1
 
 
 
@@ -246,35 +295,74 @@ let Tlist_Exit_OnlyWindow=1
 "
 "-----------------------------------------------------------------
 "
-" Map F9 to toggle taglist.
-nnoremap <f9> :TagbarToggle<CR>
+" Map F8 to toggle taglist.
+nnoremap <f8> :TagbarToggle<CR>
 
 " Set the width of tagbar window to 30
-let g:tagbar_width=30
+let g:tagbar_width = 30
 
 
 
 "-----------------------------------------------------------------
-" tComment plugin
+" vim-airline plugin
+"
+" Change status line style
+"
+"-----------------------------------------------------------------
+"
+" Enable vim-airline for tab.
+let g:airline#extensions#tabline#enabled = 1
+
+
+
+"-----------------------------------------------------------------
+" nerdcommenter plugin
 "
 " Use <C-c> to comment and uncomment.
 "
 "-----------------------------------------------------------------
 "
-" Use Ctrl-C to comment and uncomment.
-map <C-c> gcc
+" Map ctrl + c to toggle comment.
+map <C-c> <leader>c<space>
+
+" Add spaces after comment delimiters by default.
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments.
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left
+let g:NERDDefaultAlign = 'left'
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
 
 
 
 "-----------------------------------------------------------------
-" acp plugin
+" undotree plugin
 "
-" AutoCompletionPopup for Vim.
-"
+" List out all the undos.
+" 
 "-----------------------------------------------------------------
 "
-" Set acp for snippets.
-let g:acp_behaviourSnipmateLength=1
+" Map f6 to toggle the undotree window.
+nnoremap <f6> :UndotreeToggle<CR>
+
+" If undotree is opened, it is likely that interaction is expected.
+" Set focus on undotree windows.
+let g:undotree_SetFocusWhenToggle = 1
+
+
+
+"-----------------------------------------------------------------
+" deoplete.nvim plugin
+"
+" Dark powered neo-completion: deoplete.
+" It is an extensible and asynchronous completion plugin.
+" 
+"-----------------------------------------------------------------
+"
 
 
 
@@ -286,7 +374,13 @@ let g:acp_behaviourSnipmateLength=1
 "-----------------------------------------------------------------
 "
 " Map f7 to toggle the NERDTree window.
-map <f7> :NERDTreeToggle<CR>
+nnoremap <f7> :NERDTreeToggle<CR>
+
+" Let nerdtree show hidden files
+let g:NERDTreeShowHidden = 1
+
+" Close vim when NERDTree windows is the last window.
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 
 
@@ -311,7 +405,7 @@ filetype indent on
 " OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
+let g:tex_flavor = 'latex'
 
 
 
