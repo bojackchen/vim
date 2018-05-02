@@ -129,7 +129,7 @@ set nostartofline
 set laststatus=2
 
 " Display file name and line number in the status line.
-set statusline=%F\ %y:\ %l/%L\ %c\ %P
+set statusline=%F\ %y:\ %l/%L,\ %c%=line:\ %p%%/display:\ %P
 
 " Set the command window height to 2 lines, to avoid many cases
 " of having to 'Press <Enter> to continue'.
@@ -300,18 +300,6 @@ nnoremap <f8> :TagbarToggle<CR>
 
 " Set the width of tagbar window to 30
 let g:tagbar_width = 30
-
-
-
-"-----------------------------------------------------------------
-" vim-airline plugin
-"
-" Change status line style
-"
-"-----------------------------------------------------------------
-"
-" Enable vim-airline for tab.
-let g:airline#extensions#tabline#enabled = 1
 
 
 
