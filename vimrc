@@ -239,6 +239,18 @@ let g:SuperTabLongestEnhanced = 1
 
 
 "-----------------------------------------------------------------
+" vim-gitgutter plugin
+"
+" Display the difference in real time.
+"
+"-----------------------------------------------------------------
+"
+" Set the update time for display.
+set updatetime=1000
+
+
+
+"-----------------------------------------------------------------
 " CtrlP plugin
 "
 " Full path fuzzy file/buffer/mru/tag finder.
@@ -284,7 +296,7 @@ let g:syntastic_check_on_wq              = 0
 "
 "-----------------------------------------------------------------
 "
-" Enable fly mode
+" Disable fly mode
 let g:AutoPairsFlyMode = 0
 
 
@@ -296,8 +308,8 @@ let g:AutoPairsFlyMode = 0
 "
 "-----------------------------------------------------------------
 "
-" Map F8 to toggle taglist.
-nnoremap <f8> :TagbarToggle<CR>
+" Map F7 to toggle taglist.
+nnoremap <f7> :TagbarToggle<CR>
 
 " Set the width of tagbar window to 32
 let g:tagbar_width = 32
@@ -350,23 +362,12 @@ let g:acp_mappingDriven = 1
 " 
 "-----------------------------------------------------------------
 "
-" Map f6 to toggle the undotree window.
-nnoremap <f6> :UndotreeToggle<CR>
+" Map f5 to toggle the undotree window.
+nnoremap <f5> :UndotreeToggle<CR>
 
 " If undotree is opened, it is likely that interaction is expected.
 " Set focus on undotree windows.
 let g:undotree_SetFocusWhenToggle = 1
-
-
-
-"-----------------------------------------------------------------
-" deoplete.nvim plugin
-"
-" Dark powered neo-completion: deoplete.
-" It is an extensible and asynchronous completion plugin.
-" 
-"-----------------------------------------------------------------
-"
 
 
 
@@ -377,14 +378,26 @@ let g:undotree_SetFocusWhenToggle = 1
 " 
 "-----------------------------------------------------------------
 "
-" Map f7 to toggle the NERDTree window.
-nnoremap <f7> :NERDTreeToggle<CR>
+" Map f6 to toggle the NERDTree window.
+nnoremap <f6> :NERDTreeToggle<CR>
 
 " Let nerdtree show hidden files
 let g:NERDTreeShowHidden = 1
 
 " Close vim when NERDTree windows is the last window.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+
+
+"-----------------------------------------------------------------
+" vim-airline plugin
+"
+" Powerful vim statusline style.
+" 
+"-----------------------------------------------------------------
+"
+" Set vim airline style
+let g:airline_theme = 'dark'
 
 
 
