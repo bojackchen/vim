@@ -6,6 +6,10 @@
 "  Description: functions for compiling/viewing/searching latex documents
 "=============================================================================
 
+" line continuation used here.
+let s:save_cpo = &cpo
+set cpo&vim
+
 " Tex_SetTeXCompilerTarget: sets the 'target' for the next call to Tex_RunLaTeX() {{{
 function! Tex_SetTeXCompilerTarget(type, target)
 	call Tex_Debug("+Tex_SetTeXCompilerTarget: setting target to [".a:target."] for ".a:type."r", "comp")
@@ -22,7 +26,13 @@ function! Tex_SetTeXCompilerTarget(type, target)
 
 	let targetRule = Tex_GetVarValue('Tex_'.a:type.'Rule_'.target)
 
-	if targetRule != ''
+	if a:type == "Compile" && Tex_GetVarValue('Tex_UseMakefile') && (glob('makefile') != '' || glob('Makefile') != '')
+		" if a makefile exists and the user wants to use it, then use that
+		" irrespective of whether *.latexmain exists or not.
+		call Tex_Debug("Tex_SetTeXCompilerTarget: using the makefile in the current directory", "comp")
+		let &l:makeprg = 'make ' . a:target
+		call Tex_Debug('Tex_SetTeXCompilerTarget: set [makeprg = "' . &l:makeprg . '"]', 'comp')
+	elseif targetRule != ''
 		if a:type == 'Compile'
 			let &l:makeprg = escape(targetRule, Tex_GetVarValue('Tex_EscapeChars'))
 		elseif a:type == 'View'
@@ -33,11 +43,13 @@ function! Tex_SetTeXCompilerTarget(type, target)
 	elseif Tex_GetVarValue('Tex_'.a:type.'RuleComplete_'.target) != ''
 		let s:target = target
 
-	elseif a:type == 'View' && has('macunix')
+	elseif a:type == 'View' && (has('osx') || has('macunix'))
+				\ && Tex_GetVarValue('Tex_TreatMacViewerAsUNIX') != 1
 		" On the mac, we can have empty view rules, so do not complain when
 		" both Tex_ViewRule_target and Tex_ViewRuleComplete_target are
 		" empty. On other platforms, we will complain... see below.
 		let s:target = target
+		let s:viewer = ''
 
 	else
 		let l:origdir = fnameescape(getcwd())
@@ -120,17 +132,9 @@ function! Tex_CompileLatex()
 	" extracted from *.latexmain (if possible) log file name depends on the
 	" main file which will be compiled.
 	if Tex_GetVarValue('Tex_UseMakefile') && (glob('makefile') != '' || glob('Makefile') != '')
-		let _makeprg = &l:makeprg
-		call Tex_Debug("Tex_CompileLatex: using the makefile in the current directory", "comp")
-		let &l:makeprg = 'make $*'
-		if exists('s:target')
-			call Tex_Debug('Tex_CompileLatex: execing [make! '.s:target.']', 'comp')
-			exec 'make! '.s:target
-		else
-			call Tex_Debug('Tex_CompileLatex: execing [make!]', 'comp')
-			exec 'make!'
-		endif
-		let &l:makeprg = _makeprg
+		" makeprg is already set by Tex_SetTeXCompilerTarget
+		call Tex_Debug('Tex_CompileLatex: execing [make!]', 'comp')
+		exec 'make!'
 	else
 		" If &makeprg has something like "$*.ps", it means that it wants the
 		" file-name without the extension... Therefore remove it.
@@ -250,14 +254,15 @@ function! Tex_ViewLaTeX()
 		" that this particular vim and yap are connected.
 		let execString = 'start '.s:viewer.' "$*.'.s:target.'"'
 
-	elseif (has('macunix') && Tex_GetVarValue('Tex_TreatMacViewerAsUNIX') != 1)
+	elseif ((has('osx') || has('macunix'))
+				\ && Tex_GetVarValue('Tex_TreatMacViewerAsUNIX') != 1)
 
-		if strlen(s:viewer)
-			let appOpt = '-a '
+		if strlen(s:viewer) > 0
+			let appOpt = '-a ' . s:viewer
 		else
 			let appOpt = ''
 		endif
-		let execString = 'open '.appOpt.s:viewer.' $*.'.s:target
+		let execString = 'open '.appOpt.' $*.'.s:target
 
 	else
 		" taken from Dimitri Antoniou's tip on vim.sf.net (tip #225).
@@ -292,6 +297,14 @@ function! Tex_ViewLaTeX()
 		endif
 
 		if( Tex_GetVarValue('Tex_ExecuteUNIXViewerInForeground') != 1 )
+			" Redirect output to /dev/null
+			if( stridx( &shellredir, "%s" ) != -1 )
+				let execString .= " " . substitute( &shellredir, "%s", "/dev/null", '' )
+			else
+				let execString .= " " . &shellredir . "/dev/null"
+			endif
+
+			" And execute in background
 			let execString = execString.' &'
 		endif
 
@@ -347,11 +360,11 @@ function! Tex_ForwardSearchLaTeX()
 
 	let l:origdir = fnameescape(getcwd())
 
-	let mainfnameRoot = fnameescape(fnamemodify(Tex_GetMainFileName(), ':t:r'))
-	let mainfnameFull = fnameescape(Tex_GetMainFileName(':p:r'))
-	let target_file = mainfnameFull . "." . s:target
-	let sourcefile = fnameescape(expand('%'))
-	let sourcefileFull = fnameescape(expand('%:p'))
+	let mainfnameRoot = shellescape(fnamemodify(Tex_GetMainFileName(), ':t:r'), 1)
+	let mainfnameFull = Tex_GetMainFileName(':p:r')
+	let target_file = shellescape(mainfnameFull . "." . s:target, 1)
+	let sourcefile = shellescape(expand('%'), 1)
+	let sourcefileFull = shellescape(expand('%:p'), 1)
 	let linenr = line('.')
 	" cd to the location of the file to avoid problems with directory name
 	" containing spaces.
@@ -368,23 +381,28 @@ function! Tex_ForwardSearchLaTeX()
 		elseif (viewer =~? "^sumatrapdf")
 			" Forward search in sumatra has these arguments (-reuse-instance is optional):
 			" SumatraPDF -reuse-instance "pdfPath" -forward-search "texPath" lineNumber
-			let execString .= Tex_Stringformat('start %s "%s" -forward-search "%s" %s', viewer, target_file, mainfnameFull.".tex", linenr)
+			let execString .= Tex_Stringformat('start %s %s -forward-search %s %s', viewer, target_file, sourcefileFull, linenr)
 		endif	
 
-	elseif (has('macunix') && (viewer =~ '^ *\(Skim\|PDFView\|TeXniscope\)\( \|$\)'))
+	elseif ((has('osx') || has('macunix'))
+				\ && (viewer =~ '\(Skim\|PDFView\|TeXniscope\)'))
 		" We're on a Mac using a traditional Mac viewer
 
-		if viewer =~ '^ *Skim'
+		if viewer =~ 'Skim'
 
+			if executable('displayline')
+				let execString .= 'displayline '
+			else
 				let execString .= '/Applications/Skim.app/Contents/SharedSupport/displayline '
+			endif
 				let execString .= join([linenr, target_file, sourcefileFull])
 
-		elseif viewer =~ '^ *PDFView'
+		elseif viewer =~ 'PDFView'
 
 				let execString .= '/Applications/PDFView.app/Contents/MacOS/gotoline.sh '
 				let execString .= join([linenr, target_file, sourcefileFull])
 
-		elseif viewer =~ '^ *TeXniscope'
+		elseif viewer =~ 'TeXniscope'
 
 				let execString .= '/Applications/TeXniscope.app/Contents/Resources/forward-search.sh '
 				let execString .= join([linenr, sourcefileFull, target_file])
@@ -402,7 +420,7 @@ function! Tex_ForwardSearchLaTeX()
 						\ exists('v:servername') &&
 						\ viewer =~ '^ *xdvik\?\( \|$\)'
 
-				let execString .= Tex_Stringformat('-name xdvi -sourceposition "%s %s" -editor "gvim --servername %s --remote-silent +\%l \%f" %s', linenr, sourcefile, v:servername, target_file)
+				let execString .= Tex_Stringformat('-name xdvi -sourceposition "%s %s" -editor "gvim --servername %s --remote-silent +\%l \%f" %s', linenr, expand('%'), v:servername, target_file)
 
 			elseif viewer =~ '^ *kdvi'
 
@@ -410,7 +428,7 @@ function! Tex_ForwardSearchLaTeX()
 
 			elseif viewer =~ '^ *xdvik\?\( \|$\)'
 
-				let execString .= Tex_Stringformat('-name xdvi -sourceposition "%s %s" %s', linenr, sourcefile, target_file)
+				let execString .= Tex_Stringformat('-name xdvi -sourceposition "%s %s" %s', linenr, expand('%'), target_file)
 
 			elseif viewer =~ '^ *okular'
 
@@ -422,6 +440,11 @@ function! Tex_ForwardSearchLaTeX()
 
 			endif
 
+		elseif (viewer == "synctex_wrapper" )
+			" Unix + synctex_wrapper
+			" You can add a custom script named 'synctex_wrapper' in your $PATH
+			" syntax is: synctex_wrapper TARGET_FILE LINE_NUMBER COLUMN_NUMBER SOURCE_FILE
+			let execString .= Tex_Stringformat('synctex_wrapper %s %s %s %s', target_file, linenr, col('.'), sourcefile)
 		else
 			" We must be using a generic UNIX viewer
 			" syntax is: viewer TARGET_FILE LINE_NUMBER SOURCE_FILE
@@ -493,7 +516,11 @@ function! Tex_PartCompile() range
 	exe a:firstline.','.a:lastline."w! >> ".tmpfile
 
 	" edit the temporary file
-	exec 'drop '.tmpfile
+	if exists('drop')
+		exec 'drop '.tmpfile
+	else
+		exec 'tabe '.tmpfile
+	endif
 
 	" append the \end{document} line.
 	$ put ='\end{document}'
@@ -632,7 +659,11 @@ function! Tex_CompileMultipleTimes()
 	" After all compiler calls are done, reparse the .log file for
 	" errors/warnings to handle the situation where the clist might have been
 	" emptied because of bibtex/makeindex being run as the last step.
-	exec 'silent! cfile '.mainFileName_root.'.log'
+	if Tex_GetVarValue('Tex_GotoError') == 1
+		exec 'silent! cfile '.mainFileName_root.'.log'
+	else
+		exec 'silent! cgetfile '.mainFileName_root.'.log'
+	end
 
 	exe 'cd '.l:origdir
 endfunction " }}}
@@ -875,7 +906,7 @@ function! <SID>Tex_SetCompilerMaps()
 	let s:ml = '<Leader>'
 
 	nnoremap <buffer> <Plug>Tex_Compile :call Tex_RunLaTeX()<cr>
-	vnoremap <buffer> <Plug>Tex_Compile :call Tex_PartCompile()<cr>
+	xnoremap <buffer> <Plug>Tex_Compile :call Tex_PartCompile()<cr>
 	nnoremap <buffer> <Plug>Tex_View :call Tex_ViewLaTeX()<cr>
 	nnoremap <buffer> <Plug>Tex_ForwardSearch :call Tex_ForwardSearchLaTeX()<cr>
 
@@ -897,5 +928,7 @@ command! -nargs=0 -range=% TPartCompile :<line1>, <line2> silent! call Tex_PartC
 " the _main_ file irrespective of the presence of a .latexmain file.
 command! -nargs=0 TCompileThis let b:fragmentFile = 1
 command! -nargs=0 TCompileMainFile let b:fragmentFile = 0
+
+let &cpo = s:save_cpo
 
 " vim:fdm=marker:ff=unix:noet:ts=4:sw=4

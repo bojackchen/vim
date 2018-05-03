@@ -83,7 +83,7 @@ TexLet g:Tex_DebugLog = ''
 " generating a .dvi file. Change this line if you want to set another default.
 " NOTE: Make sure that a target for this format exists in the 'Compiler rules'
 "       section below and is set up properly for your system.
-if has('macunix')
+if has('osx') || has('macunix')
 	TexLet g:Tex_DefaultTargetFormat = 'pdf'
 else
 	TexLet g:Tex_DefaultTargetFormat = 'dvi'
@@ -140,7 +140,7 @@ if has('win32')
 	TexLet g:Tex_ViewRule_ps = 'gsview32'
 	TexLet g:Tex_ViewRule_pdf = 'AcroRd32'
 	TexLet g:Tex_ViewRule_dvi = 'yap -1'
-elseif has('macunix')
+elseif has('osx') || has('macunix')
 	" Let the system pick.  If you want, you can override the choice here.
 	TexLet g:Tex_ViewRule_ps = ''
 	TexLet g:Tex_ViewRule_pdf = ''
@@ -353,12 +353,17 @@ TexLet g:Tex_Leader2 = ','
 " (See |placeholders| for what these are.)
 " Mnemonic:
 " 1. All environment mappings begin with 'E'
-" 2. The next two capital letters are (for the common environments) the
-"    first 2 letters of the environment name converted into upper case. For
-"    example, for the center environment above, use ECE. There are a few
-"    necessary exceptions such as:
-"        equation   -->  EEQ
-"        eqnarray   -->  EEA
+" 2. If the environment can be broken up into 2 distinct words, such as flushright
+"    (flush + right), then the next 2 letters are the first letters of the 2
+"    words. Example:  >
+"        flushleft  (_f_lush + _l_eft)  ---> EFL
+"        flushright (_f_lush + _r_ight) ---> EFR
+"        minipage   (_m_ini  + _p_age)  ---> EMP
+"    If on the other hand, the environment name cannot be broken up into 2
+"    distinct words, then the next 2 letters are the first 2 letters of the name
+"    of the environment. Example:  >
+"        equation (_eq_uation)          ---> EEQ
+"
 "    Please see texmaps.vim for the complete list.
 " 
 " Along with the insert mode mappings, a set of visual mode mappings is
@@ -380,6 +385,17 @@ TexLet g:Tex_Leader2 = ','
 TexLet g:Tex_EnvironmentMaps  = 1
 TexLet g:Tex_EnvironmentMenus = 1
 
+" Customizations:
+" Should a environment mapping end with a carriage return after "\end{...}"?
+TexLet g:Tex_EnvEndWithCR = 0
+" Should the label placed before or after the content?
+TexLet g:Tex_LabelAfterContent = 1
+" Should an \item be followed by a carriage return?
+TexLet g:Tex_ItemsWithCR = 0
+
+" Set up standard prefixes for labels.
+TexLet g:Tex_EnvLabelprefix_table = "tab:"
+TexLet g:Tex_EnvLabelprefix_figure = "fig:"
 
 " }}}
 " Font Macros: {{{
@@ -444,12 +460,12 @@ TexLet g:Tex_SectionMenus = 1
 "   <++>
 " \end{env} 
 " is inserted.
-" \[ and $$ are also recognized.
+" \[ is also recognized.
 " NOTE: Setting this variable to the empty string is a way of leaving the 
 "       <F5> key unmapped
 
 TexLet g:Tex_PromptedEnvironments =
-	\ 'eqnarray*,eqnarray,equation,equation*,\[,$$,align,align*'
+	\ 'equation,equation*,align,align*,enumerate,itemize,figure,table'
 
 " Another quick way of inserting environments is to press one of the shifted
 " function keys from <F1> through <F4>.
@@ -462,7 +478,7 @@ TexLet g:Tex_PromptedEnvironments =
 " The number of items in this list decides how many shifted function keys are
 " mapped.
 TexLet g:Tex_HotKeyMappings = 
-	\ 'eqnarray*,eqnarray,bmatrix'
+	\ 'equation*,equation,bmatrix'
 
 " Similar to above mechanisms works <F7> key. It prompts for command with list
 " of commands from g:Tex_PromptedCommands. There are not HotKeys for commands.
@@ -480,6 +496,8 @@ TexLet g:Tex_PromptedCommands =
 " Pressing <BS> in insert mode checks to see whether we are just after
 " something like \'{a} and if so, deletes all of it. i.e, diacritics are
 " treated as single characters for backspacing.
+" You might want to disable this feature, if you are editing
+" Chinese, Japanese or Korean text.
 " Setting this to zero will leave the <BS> key unmapped.
 " Default: 1 
 TexLet g:Tex_SmartKeyBS = 1
@@ -554,8 +572,8 @@ TexLet g:Tex_SmartKeyDot = 1
 "       insert a simple \item, but within a description, it will insert
 "       \item[<+label+>] etc.
 "
-" Default: 1 
-TexLet g:Tex_AdvancedMath = 1
+" Default: 0
+TexLet g:Tex_AdvancedMath = 0
 
 " }}}
 
@@ -584,7 +602,7 @@ TexLet g:Tex_ViewerPreviewHeight = 10
 TexLet g:Tex_ExplorerHeight = 10
 
 " Directory for images. Read |latex-completion-explorer| before changing
-TexLet g:Tex_ImageDir = ''
+TexLet g:Tex_ImageDir = '.'
 
 " }}}
 " Options for completing a \ref {{{
@@ -728,7 +746,7 @@ TexLet g:Tex_Folding = 1
 " Setting this to zero means that a file is not folded up as soon as its
 " opened.
 " NOTE: the MakeTeXFolds() function will still be available (unless disabled
-"       by g:Tex_Folding), so you can do <F6> or \rf to refresh/create folds.
+"       by g:Tex_Folding), so you can do \rf to refresh/create folds.
 TexLet g:Tex_AutoFolding = 1 
 
 " }}}

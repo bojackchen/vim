@@ -185,8 +185,8 @@ map <s-tab> :bp<CR>
 " Map Tab to go to next buffer.
 map <tab> :bn<CR>
 
-" Map <Space> to open and close fold in file.
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+" Map <space> to open and close fold in file.
+nnoremap <silent> <space> @=(foldlevel('.')?'za':"\<space>")<CR>
 
 " Map <C-L> (redraw screen) to also turn off search highlighting
 " until the next search
@@ -218,6 +218,23 @@ autocmd! bufwritepost vimrc source ~/.vim/vimrc
 " Doorkeeper of all my vim plugins.
 " Pathogen is a vim plugin manager.
 call pathogen#infect()
+
+
+
+"-----------------------------------------------------------------
+" SuperTab plugin
+"
+" SuperTab allows you to perform all your insert completion
+" using <tab>
+"
+"-----------------------------------------------------------------
+"
+" Set <c-p> to go forward (previous), <c-n> to go backward (next).
+let g:SuperTabMappingForward  = '<c-p>'
+let g:SuperTabMappingBackward = '<c-n>'
+
+" Enable SuperTab longest match support
+let g:SuperTabLongestEnhanced = 1
 
 
 

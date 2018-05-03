@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 # Part of Latex-Suite
 #
@@ -34,7 +34,7 @@ def getFileContents(fname):
         return ''
 
     # TODO what are all the ways in which a tex file can include another?
-    pat = re.compile(r'^\\(@?)(include|input){(.*?)}', re.M)
+    pat = re.compile(r'^\s*\\(@?)(include|input){(.*?)}', re.M)
     contents = re.sub(pat, getFileContents, contents)
 
     return ('%%==== FILENAME: %s' % fname) + '\n' + contents
@@ -85,19 +85,19 @@ def getSectionLabels_Root(lineinfo, section_prefix, label_prefix):
         line = m.group(2).lstrip()
 
         # we found a label!
-        m = re.search(r'\\label{(%s.*?)}' % label_prefix, line)
+        m = re.search(r'\\(?:nl)?label{(%s.*?)}' % label_prefix, line)
         if m:
             # Get the corresponding label
             label = m.group(1)
 
             # add the current line (except the \label command) to the text
             # which will be displayed below this label
-            prev_txt += re.search(r'(^.*?)\\label{', line).group(1)
+            prev_txt += re.search(r'(^.*?)\\(?:nl)?label{', line).group(1)
 
             # for the figure environment however, just display the caption.
             # instead of everything since the \begin command.
             if prev_env == 'figure':
-                cm = re.search(r'\caption(\[.*?\]\s*)?{(.*?)}', prev_txt)
+                cm = re.search(r'\\caption(\[.*?\]\s*)?{(.*?)}', prev_txt)
                 if cm:
                     prev_txt = cm.group(2)
 
@@ -117,15 +117,15 @@ def getSectionLabels_Root(lineinfo, section_prefix, label_prefix):
         # NOTE: This assumes that there is no equation text on the same
         # line as the \begin or \end command. The text on the same line as
         # the \label was already handled.
-        if re.search(r'\\begin{(equation|eqnarray|align|figure)', line):
+        if re.search(r'\\begin{(equation|align|figure)', line):
             prev_txt = ''
             prev_env = re.search(r'\\begin{(.*?)}', line).group(1)
             inside_env = 1
 
-        elif re.search(r'\\label', line):
+        elif re.search(r'\\(?:nl)?label', line):
             prev_txt = ''
 
-        elif re.search(r'\\end{(equation|eqnarray|align|figure)', line):
+        elif re.search(r'\\end{(equation|align|figure)', line):
             inside_env = 0
             prev_env = ''
 
