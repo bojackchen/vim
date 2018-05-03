@@ -129,7 +129,7 @@ set nostartofline
 set laststatus=2
 
 " Display file name and line number in the status line.
-set statusline=%F\ %y:\ %l/%L,\ %c%=line:\ %p%%/display:\ %P
+set statusline=%F\ %y:\ %l/%L,\ %c\ %=\ line:\ %p%%/display:\ %P
 
 " Set the command window height to 2 lines, to avoid many cases
 " of having to 'Press <Enter> to continue'.
@@ -188,8 +188,8 @@ map <tab> :bn<CR>
 " Map <Space> to open and close fold in file.
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 
-" Map <C-L> (redraw screen) to also turn off search highlighting until
-" the next search
+" Map <C-L> (redraw screen) to also turn off search highlighting
+" until the next search
 nnoremap <C-L> :nohl<CR><C-L>
 
 
@@ -218,22 +218,6 @@ autocmd! bufwritepost vimrc source ~/.vim/vimrc
 " Doorkeeper of all my vim plugins.
 " Pathogen is a vim plugin manager.
 call pathogen#infect()
-
-
-
-"-----------------------------------------------------------------
-" YouCompleteMe plugin
-"
-" Code auto popup completion.
-"
-"-----------------------------------------------------------------
-"
-let g:acp_enableAtStartup = 0
-
-" Enable completion from tags.
-let g:ycm_collect_identifiers_from_tags_files = 1
-
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 
 
 
@@ -284,7 +268,7 @@ let g:syntastic_check_on_wq              = 0
 "-----------------------------------------------------------------
 "
 " Enable fly mode
-let g:AutoPairsFlyMode = 1
+let g:AutoPairsFlyMode = 0
 
 
 
@@ -298,8 +282,8 @@ let g:AutoPairsFlyMode = 1
 " Map F8 to toggle taglist.
 nnoremap <f8> :TagbarToggle<CR>
 
-" Set the width of tagbar window to 30
-let g:tagbar_width = 30
+" Set the width of tagbar window to 32
+let g:tagbar_width = 32
 
 
 
@@ -322,8 +306,23 @@ let g:NERDCompactSexyComs = 1
 " Align line-wise comment delimiters flush left
 let g:NERDDefaultAlign = 'left'
 
-" Enable trimming of trailing whitespace when uncommenting
+" Enable trimming of trailing white space when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
+
+
+
+"-----------------------------------------------------------------
+" acp plugin
+"
+" Auto completion popup (AutoComplPop) for vim
+" 
+"-----------------------------------------------------------------
+"
+" Set up acp for snipMate plugin.
+let g:acp_behaviorSnipmateLength = 1
+
+" Disable auto-popup by moving cursor in insert mode.
+let g:acp_mappingDriven = 1
 
 
 
