@@ -137,7 +137,7 @@ set statusline=%F\ %y:\ %l/%L,\ %c\ %=\ line:\ %p%%/display:\ %P
 set cmdheight=2
 
 " Highlight the current line
-"set cursorline
+set cursorline
 
 " No backup file (*~) and undo file (*.un~).
 set nobackup
@@ -247,11 +247,12 @@ let g:SuperTabLongestEnhanced = 1
 " vim-gitgutter plugin
 "
 " Display the difference in real time.
+" vim-gitgutter is disabled in branch 'vim-light'
 "
 "-----------------------------------------------------------------
 "
 " Set the update time for display.
-set updatetime=1000
+"set updatetime=1000
 
 
 
@@ -278,19 +279,20 @@ let g:ctrlp_switch_buffer = 'et'
 " syntastic plugin
 "
 " This is a syntax checking plugin.
+" syntastic is disabled in branch 'vim-light'
 "
 "-----------------------------------------------------------------
 "
 " Add information to status line
-set statusline +=%#warningmsg#
-set statusline +=%{SyntasticStatuslineFlag()}
-set statusline +=%*
+"set statusline +=%#warningmsg#
+"set statusline +=%{SyntasticStatuslineFlag()}
+"set statusline +=%*
 
 " Set syntax checking options
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list            = 1
-let g:syntastic_check_on_open            = 1
-let g:syntastic_check_on_wq              = 0
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list            = 1
+"let g:syntastic_check_on_open            = 1
+"let g:syntastic_check_on_wq              = 0
 
 
 
@@ -310,14 +312,15 @@ let g:AutoPairsFlyMode = 0
 " tagbar plugin
 "
 " Create tags according to the file. Similar to taglist.
+" tagbar is disabled in branch 'vim-light'
 "
 "-----------------------------------------------------------------
 "
 " Map F7 to toggle taglist.
-nnoremap <F7> :TagbarToggle<CR>
+"nnoremap <F7> :TagbarToggle<CR>
 
 " Set the width of tagbar window to 32
-let g:tagbar_width = 32
+"let g:tagbar_width = 32
 
 
 
