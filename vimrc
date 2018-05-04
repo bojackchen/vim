@@ -5,7 +5,7 @@
 "-----------------------------------------------------------------
 "
 "-----------------------------------------------------------------
-" Start of the vimrc file
+" Start of the vimrc file.
 "
 "-----------------------------------------------------------------
 
@@ -22,7 +22,7 @@
 " Ward off unexpected things that my distro may have, as well
 " as sanely reset options when re-source .vimrc.
 " Use Vim settings rather than Vi settings.
-" This must be the first, cause it will change other options
+" This must be put the first, cause it will change other options
 set nocompatible
 
 " Allow backspacing over autoindent, line breaks and start of insert
@@ -43,7 +43,7 @@ if has('mouse')
   set mouse=a
 endif
 
-" Case insensitive search for vim, except when using captial letters
+" Case insensitive search for vim, except when using capital letters
 set ignorecase
 set smartcase
 
@@ -101,7 +101,7 @@ set visualbell
 " better indentation of your code.
 "
 "-----------------------------------------------------------------
-
+"
 " Indentation settings for using 2 spaces to replace tabs.
 " Do not change 'tabstop' from its default value of 8 to 2.
 set expandtab
@@ -109,6 +109,7 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 set shiftround
+set smarttab
 
 
 
@@ -135,8 +136,12 @@ set statusline=%F\ %y:\ %l/%L,\ %c\ %=\ line:\ %p%%/display:\ %P
 " of having to 'Press <Enter> to continue'.
 set cmdheight=2
 
-" Backup settings.
+" Highlight the current line
+"set cursorline
+
+" No backup file (*~) and undo file (*.un~).
 set nobackup
+set noundofile
 
 " No swap file.
 set noswapfile
@@ -171,7 +176,7 @@ map ,f :q!<CR>
 " Map ,w to write and close the file.
 map ,w :wq<CR>
 
-" Map ,wa to write and close ALL the files.
+" Map ,a to write and close ALL the files.
 map ,a :wqa<CR>
 
 " Map ,z to create fold based on indent.
@@ -309,7 +314,7 @@ let g:AutoPairsFlyMode = 0
 "-----------------------------------------------------------------
 "
 " Map F7 to toggle taglist.
-nnoremap <f7> :TagbarToggle<CR>
+nnoremap <F7> :TagbarToggle<CR>
 
 " Set the width of tagbar window to 32
 let g:tagbar_width = 32
@@ -362,8 +367,8 @@ let g:acp_mappingDriven = 1
 " 
 "-----------------------------------------------------------------
 "
-" Map f5 to toggle the undotree window.
-nnoremap <f5> :UndotreeToggle<CR>
+" Map F5 to toggle the undotree window.
+nnoremap <F5> :UndotreeToggle<CR>
 
 " If undotree is opened, it is likely that interaction is expected.
 " Set focus on undotree windows.
@@ -378,8 +383,8 @@ let g:undotree_SetFocusWhenToggle = 1
 " 
 "-----------------------------------------------------------------
 "
-" Map f6 to toggle the NERDTree window.
-nnoremap <f6> :NERDTreeToggle<CR>
+" Map F6 to toggle the NERDTree window.
+nnoremap <F6> :NERDTreeToggle<CR>
 
 " Let nerdtree show hidden files
 let g:NERDTreeShowHidden = 1
@@ -402,25 +407,20 @@ let g:airline_theme = 'dark'
 
 
 "-----------------------------------------------------------------
-" vim-latex-suite plugin
+" vim-latex plugin
 "
 " latex-suite for vim.
-" 
+"
 "-----------------------------------------------------------------
 "
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
-    
 " IMPORTANT: grep will sometimes skip displaying the file name if you
 " search in a singe file. This will confuse Latex-Suite. Set your grep
 " program to always generate a file-name.
 set grepprg=grep\ -nH\ $*
 
-" OPTIONAL: This enables automatic indentation as you type.
-filetype indent on
-
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files
+" defaults to 'plaintex' instead of 'tex', which results in
+" vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor = 'latex'
 
