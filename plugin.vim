@@ -134,7 +134,7 @@ let g:tagbar_width = 32
 " Easy comment plugin for VIM
 " --------------------------------------------------------------
 " Map Ctrl + c to toggle comment
-noremap <C-c> <leader>c<space>
+map <C-c> <leader>c<space>
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
