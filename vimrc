@@ -296,6 +296,9 @@ map <leader>aw :wqa<CR>
 " --------------------------------------------------------------
 " -> Spell check
 " --------------------------------------------------------------
+" Add dictionary to VIM to enable the auto completion of words
+set dictionary+=/usr/share/dict/words
+
 " Pressing ,ss will toggle spell check
 map <leader>ss :setlocal spell!<CR>
 
