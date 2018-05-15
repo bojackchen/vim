@@ -152,9 +152,6 @@ syntax on
 " Set colorscheme to default for branch "vim-light"
 colorscheme default
 
-" Set background color to dark
-set background=dark
-
 " Set UTF-8 as standard encoding and
 " en_US as the standard language
 set encoding=UTF-8
