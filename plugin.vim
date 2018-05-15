@@ -16,7 +16,6 @@
 "   -> SuperTab
 "   -> GitGutter
 "   -> CtrlP
-"   -> Syntastic
 "   -> Auto-Pairs
 "   -> Tagbar
 "   -> NerdCommenter
@@ -41,7 +40,7 @@ call pathogen#infect()
 " -> SuperTab
 "
 " SuperTab allows you to perform all your insert completion
-" using <tab>
+" needs using <tab>
 " --------------------------------------------------------------
 " Set Ctrl + p to go forward (previous) and Ctrl + n to
 " go backward (next)
@@ -56,13 +55,17 @@ let g:SuperTabLongestEnhanced = 1
 " -> GitGutter
 " gitgutter plugin is disabled in branch "vim-light"
 "
-" Display the diff in git repository in real time
+" Display a git diff in the gutter (sign column) and stage
+" or undo hunks
 " --------------------------------------------------------------
 " Set the display update time
 "set updatetime=800
 
 " Map ,d to toggle gitgutter
 "noremap <silent> <leader>d :GitGutterToggle<CR>
+
+" Map ,l to toggle line highlight
+"noremap <silent> <leader>l :GitGutterLineHighlightsToggle<CR>
 
 
 " --------------------------------------------------------------
@@ -74,8 +77,14 @@ let g:SuperTabLongestEnhanced = 1
 let g:ctrlp_map = "<C-p>"
 let g:ctrlp_cmd = "CtrlP"
 
-" CtrlP buffer
+" Use Ctrl + b to invoke CtrlP find in buffer
 map <C-b> :CtrlPBuffer<CR>
+
+" Use Ctrl + m to invode CtrlP find in MRU
+map <C-m> :CtrlPMRU<CR>
+
+" User Ctrl + a to invoke CtrlP find in all
+map <C-a> :CtrlPMixed<CR>
 
 " Set CtrlP maximum window height
 let g:ctrlp_max_height = 16
@@ -85,33 +94,16 @@ let g:ctrlp_custom_ignore = "node_modules\|\.DS_Store\|\.git"
 
 " Set CtrlP working directory to be the directory of the
 " current file
-" let g:ctrlp_working_path_mode = "ra"
+let g:ctrlp_working_path_mode = "ra"
 
 " If a file is already open, open it again in a new panel
-" let g:ctrlp_switch_buffer = "et"
-
-
-" --------------------------------------------------------------
-" -> Syntastic
-"
-" Syntax checking for codes
-" --------------------------------------------------------------
-" Add information to the status line
-set statusline +=%#warningmsg#
-set statusline +=%{SyntasticStatuslineFlag()}
-set statusline +=%*
-
-" Set syntax check options
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list            = 1
-let g:syntastic_check_on_open            = 1
-let g:syntastic_check_on_wq              = 0
+let g:ctrlp_switch_buffer = "et"
 
 
 " --------------------------------------------------------------
 " -> Auto-Pairs
 "
-" Auto close paired brackets
+" Insert or delete brackets, parens and quotes in pairs
 " --------------------------------------------------------------
 " Disable fly mode
 let g:AutoPairsFlyMode = 0
@@ -121,10 +113,10 @@ let g:AutoPairsFlyMode = 0
 " -> Tagbar
 " Tagbar plugin is disabled in branch "vim-light"
 "
-" Create tags based on the file and list the tags out
+" VIM plugin to display tags in a window ordered by scope
 " --------------------------------------------------------------
 " Map <F7> to toggle tagbar
-"noremap <F7> :TagbarToggle<CR>
+"nmap <F7> :TagbarToggle<CR>
 
 " Set the width of the tagbar window to 32
 "let g:tagbar_width = 32
@@ -133,10 +125,10 @@ let g:AutoPairsFlyMode = 0
 " --------------------------------------------------------------
 " -> NerdCommenter
 "
-" Easy comment plugin for VIM
+" VIM plugin for intensely orgasmic commenting
 " --------------------------------------------------------------
 " Map Ctrl + c to toggle comment
-map <C-c> <leader>c<space>
+nmap <C-c> <leader>c<space>
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -154,7 +146,7 @@ let g:NERDTrimTrailingWhitespace = 1
 " --------------------------------------------------------------
 " -> AutoComplPop
 "
-" Auto completion popup (acp) for VIM
+" Automatic completion popup menu for VIM
 " --------------------------------------------------------------
 " Set up acp for snipMate plugin
 let g:acp_behaviorSnipmateLength = 1
@@ -166,25 +158,34 @@ let g:acp_mappingDriven = 1
 " --------------------------------------------------------------
 " -> UndoTree
 "
-" Undo operations tree
+" The ultimate undo history visualizer for VIM
 " --------------------------------------------------------------
-" Map F5 to toggle the undotree window.
-nnoremap <F5> :UndotreeToggle<CR>
+" Map <F5> to toggle the undotree window.
+nmap <F5> :UndotreeToggle<CR>
+
+" Set the width of the undotree window
+let g:undotree_SplitWidth = 32
+
+" Set the height of the diff window
+let g:undotree_DiffpanelHeight = 12
 
 " When undotree is opened, set focus on undotree windows
 let g:undotree_SetFocusWhenToggle = 1
+
+" Use shorter timestamps indicator
+let g:undotree_ShortIndicators = 1
 
 
 " --------------------------------------------------------------
 " -> NerdTree
 "
-" NerdTree file explorer plugin
+" A visualized tree explorer plugin for VIM
 " --------------------------------------------------------------
-" Map F6 to toggle the NERDTree window
-nnoremap <F6> :NERDTreeToggle<CR>
+" Map <F6> to toggle the NERDTree window
+nmap <F6> :NERDTreeToggle<CR>
 
 " Map ,nf to nerdtree find
-nnoremap <leader>nf :NERDTreeFind<CR>
+nmap <leader>nf :NERDTreeFind<CR>
 
 " Set nerdtree window size
 let g:NERDTreeWinSize = 32
@@ -199,16 +200,19 @@ autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " --------------------------------------------------------------
 " -> vim-airline
 "
-" Powerful VIM statusline style
+" Lean and mean status/tabline for VIM that is light as air
 " --------------------------------------------------------------
 " Set vim airline style
 let g:airline_theme = "dark"
+
+" Enable display of all buffers when there is only one window
+let g:airline#extensions#tabline#enabled = 1
 
 
 " --------------------------------------------------------------
 " -> vim-latex
 "
-" Latex-suite for VIM.
+" Enhanced LaTeX support for VIM
 " --------------------------------------------------------------
 " IMPORTANT: grep will sometimes skip displaying the file name
 " if you search in a singe file. This will confuse Latex-suite

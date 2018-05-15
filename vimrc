@@ -149,6 +149,9 @@ set timeoutlen=500
 " Enable syntax highlighting
 syntax on
 
+" Set colorscheme to default for branch "vim-light"
+colorscheme default
+
 " Set background color to dark
 set background=dark
 
@@ -296,6 +299,9 @@ map <leader>aw :wqa<CR>
 " --------------------------------------------------------------
 " -> Spell check
 " --------------------------------------------------------------
+" Add dictionary to VIM to enable the auto completion of words
+set dictionary+=/usr/share/dict/words
+
 " Pressing ,ss will toggle spell check
 map <leader>ss :setlocal spell!<CR>
 
