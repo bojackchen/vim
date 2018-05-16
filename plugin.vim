@@ -62,11 +62,11 @@ let g:SuperTabLongestEnhanced = 1
 " Set the display update time
 "set updatetime=800
 
-" Map ,d to toggle gitgutter
-"nmap <silent> <leader>d :GitGutterToggle<CR>
+" Map ,gd to toggle gitgutter
+"nmap <silent> <leader>gd :GitGutterToggle<CR>
 
-" Map ,l to toggle line highlight
-"nmap <silent> <leader>l :GitGutterLineHighlightsToggle<CR>
+" Map ,gl to toggle line highlight
+"nmap <silent> <leader>gl :GitGutterLineHighlightsToggle<CR>
 
 
 " --------------------------------------------------------------
