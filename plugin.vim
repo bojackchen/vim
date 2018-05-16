@@ -16,6 +16,7 @@
 "   -> SuperTab
 "   -> GitGutter
 "   -> CtrlP
+"   -> Syntastic
 "   -> Auto-Pairs
 "   -> Tagbar
 "   -> NerdCommenter
@@ -98,6 +99,24 @@ let g:ctrlp_working_path_mode = "ra"
 
 " If a file is already open, open it again in a new panel
 let g:ctrlp_switch_buffer = "et"
+
+
+" --------------------------------------------------------------
+" -> Syntastic
+" Syntastic plugin is disabled in branch "vim-light"
+"
+" Syntax checking hacks for VIM
+" --------------------------------------------------------------
+" Add information to the status line
+"set statusline +=%#warningmsg#
+"set statusline +=%{SyntasticStatuslineFlag()}
+"set statusline +=%*
+
+" Set syntax check options
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list            = 1
+"let g:syntastic_check_on_open            = 1
+"let g:syntastic_check_on_wq              = 0
 
 
 " --------------------------------------------------------------
