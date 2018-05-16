@@ -62,10 +62,10 @@ let g:SuperTabLongestEnhanced = 1
 set updatetime=800
 
 " Map ,d to toggle gitgutter
-nmap <silent> <leader>d :GitGutterToggle<CR>
+nmap <silent> <leader>gd :GitGutterToggle<CR>
 
 " Map ,l to toggle line highlight
-nmap <silent> <leader>l :GitGutterLineHighlightsToggle<CR>
+nmap <silent> <leader>gl :GitGutterLineHighlightsToggle<CR>
 
 
 " --------------------------------------------------------------
