@@ -157,6 +157,7 @@ colorscheme default
 set encoding=UTF-8
 
 " Use Unix as the standard file type
+set fileformat=unix
 set fileformats=unix,dos
 
 
