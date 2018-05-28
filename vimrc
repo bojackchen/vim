@@ -82,13 +82,6 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,.DS_Store
 
-" Highlight current line with bold font, dark shadow background
-" Both for color terminal and gui window
-" Color code 59: Grey 37
-set cursorline
-hi CursorLine cterm=bold ctermbg=59 ctermfg=NONE
-hi CursorLine gui=bold guibg=#CCCCCC guifg=NONE
-
 " Display the cursor position on the last line of the screen or
 " in the status line of the window.
 set ruler
@@ -153,6 +146,13 @@ syntax on
 
 " Set colorscheme to default for branch "vim-light"
 colorscheme default
+
+" Highlight current line with bold font, dark shadow background
+" Both for color terminal and gui window
+" Color code 59: Grey 37
+set cursorline
+hi CursorLine cterm=bold ctermbg=59 ctermfg=NONE
+hi CursorLine gui=bold guibg=#CCCCCC guifg=NONE
 
 " Set UTF-8 as standard encoding and en_US as the standard
 " language
