@@ -82,10 +82,8 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,.DS_Store
 
-" Highlight current line with bold font, darkgray background
-" and white foreground
+" Highlight current line
 set cursorline
-hi CursorLine term=bold cterm=bold ctermbg=DarkGray ctermfg=White
 
 " Display the cursor position on the last line of the screen or
 " in the status line of the window.
