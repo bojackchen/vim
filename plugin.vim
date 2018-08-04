@@ -14,6 +14,7 @@
 " Sections:
 "   -> Pathogen : https://github.com/tpope/vim-pathogen.git
 "   -> SuperTab : https://github.com/ervandew/supertab.git
+"   -> Emmet-vim : https://github.com/mattn/emmet-vim.git
 "   -> GitGutter : https://github.com/airblade/vim-gitgutter.git
 "   -> CtrlP : https://github.com/kien/ctrlp.vim.git
 "   -> Syntastic : https://github.com/vim-syntastic/syntastic.git
@@ -50,6 +51,19 @@ let g:SuperTabMappingBackward = "<C-N>"
 
 " Enable SuperTab longest match support
 let g:SuperTabLongestEnhanced = 1
+
+
+" --------------------------------------------------------------
+" -> Emmet-vim
+"
+" Emmet-vim provides support for expanding abbreviations
+" especially for HTML, CSS and JS
+" --------------------------------------------------------------
+" Enable emmet expansion in all modes
+let g:user_emmet_mode = "a"
+
+" Redefine emmet trigger key to Ctrl + E
+let g:user_emmet_leader_key = "<C-E>"
 
 
 " --------------------------------------------------------------
