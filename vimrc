@@ -147,6 +147,9 @@ syntax on
 " Set background color to dark
 set background=dark
 
+" Set colorscheme
+colorscheme desert
+
 " Highlight current line with bold font, dark shadow background
 " Both for color terminal and gui window
 " Color code 59: Grey 37
