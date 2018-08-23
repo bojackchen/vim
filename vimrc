@@ -144,8 +144,8 @@ set timeoutlen=500
 " Enable syntax highlighting
 syntax on
 
-" Set colorscheme to default for branch "vim-light"
-colorscheme default
+" Set colorscheme
+colorscheme desert
 
 " Highlight current line with bold font, dark shadow background
 " Both for color terminal and gui window
