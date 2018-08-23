@@ -155,7 +155,7 @@ colorscheme desert
 " Color code 59: Grey 37
 set cursorline
 hi CursorLine cterm=bold ctermbg=59 ctermfg=NONE
-hi CursorLine gui=bold guibg=#CCCCCC guifg=NONE
+hi CursorLine gui=bold guibg=#777777 guifg=NONE
 
 " Set UTF-8 as standard encoding and en_US as the standard
 " language
