@@ -155,7 +155,7 @@ colorscheme desert
 " Color code 236: Grey19, #303030
 set cursorline
 hi CursorLine cterm=bold ctermbg=236 ctermfg=NONE
-hi CursorLine gui=bold guibg=#777777 guifg=NONE
+hi CursorLine gui=bold guibg=#666666 guifg=NONE
 
 " Set UTF-8 as standard encoding and en_US as the standard
 " language
