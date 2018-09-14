@@ -3,7 +3,7 @@
 "
 " Description: This is my personal VIM configuration file.
 " Note that plugin configurations are included by sourcing
-" another file named 'plugin', where plugin configurations
+" another file named 'plugin.vim', where plugin configurations
 " are placed.
 "
 " Github repository: https://github.com/bojackchen/vim.git
@@ -287,7 +287,10 @@ vnoremap <C-D> :m'>+<CR>`<my`>mzgv`yo`z
 vnoremap <C-U> :m'<-2<CR>`>my`<mzgv`yo`z
 
 " Map ,e to edit the vimrc file
-nnoremap <leader>e :e ~/.vimrc<CR>
+nnoremap <leader>e :e ~/.vim/vimrc<CR>
+
+" Map ,p to edit the vimrc file
+nnoremap <leader>p :e ~/.vim/plugin.vim<CR>
 
 " Map ,q to exit without saving, and add 'a' for all
 nnoremap <leader>q :q!<CR>
